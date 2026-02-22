@@ -157,8 +157,6 @@ def ventana_guardar():
     )
     btn_guardar.pack(pady=(25,10))
 
-
-
 def guardar_archivo():
     codigo = obtener_codigo()
     nombre = texto_emergente.get("1.0", "end-1c")
@@ -166,11 +164,10 @@ def guardar_archivo():
         file.write(codigo)
     emergente.destroy()
     Mbox('exito', 'Se ha guardado con exito', 0)
-    print("archivo guardado")
+    #print("archivo guardado")
 
 def Mbox(title, text, style):
     return ctypes.windll.user32.MessageBoxW(0, text, title, style)
-
 
 def ventana_cargar():
     global texto_emergente2
@@ -286,7 +283,7 @@ def mostrar_lexico():
     ocupar_ram()
     #Obtener código del editor
     codigo = ram
-    print(codigo)
+    #print(codigo)
 
     limpiar_contenido()
     
@@ -519,7 +516,9 @@ def p_error(p):
     messagebox.showinfo("Error", "Error de sintaxis al final del archivo")
     raise SyntaxError("Error de sintaxis al final del archivo")
 
-parser = yacc.yacc(start="program")
+parser = yacc.yacc(start="program", debug=False, #le agregue los 3 atributos para generar el exe
+    write_tables=False,
+    errorlog=yacc.NullLogger())
 
 def node_to_dict(n):
     return {
@@ -612,7 +611,7 @@ def mostrar_arbol():
     ocupar_ram()
     #Obtener código del editor
     codigo = ram
-    print(codigo)
+    #print(codigo)
 
     limpiar_contenido()
 
