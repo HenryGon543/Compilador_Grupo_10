@@ -1,2 +1,0 @@
-int hola = 300;
-print("holaa");
