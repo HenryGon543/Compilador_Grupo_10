@@ -1,0 +1,12 @@
+int x = 2;
+int contador = 0;
+float decimal = 3.22;
+int variable = x * 2 - 25;
+
+if(x ==2) (
+  print("opcion uno");
+) else (
+  print("opcion dos");
+)
+
+print("programa terminado");
