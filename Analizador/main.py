@@ -283,6 +283,8 @@ reservadas = {
     'print': 'PRINT',
     'printf': 'PRINTF',
 
+    'for': 'FOR',
+
     'return': 'RETURN'
 }
 
@@ -319,13 +321,20 @@ tokens = [
 
     # Llaves
     'LLAVE_IZQ',
-    'LLAVE_DER'
+    'LLAVE_DER',
 
-] + list(reservadas.values())
+    #for
+    'INCREMENTO',
+    'DECREMENTO',
+
+] + list(reservadas.values()) #las palabras reservadas entran automaticamente a tokens
 
 # =====================================================
-# TOKENS SIMPLES
+# TOKENS SIMPLES (regex)
 # =====================================================
+
+t_INCREMENTO = r'\+\+'
+t_DECREMENTO = r'--'
 
 t_SUMA = r'\+'
 t_RESTA = r'-'
@@ -352,8 +361,11 @@ t_PARENTESIS_DER = r'\)'
 t_LLAVE_IZQ = r'\{'
 t_LLAVE_DER = r'\}'
 
+
 # Ignorar espacios y tabs
 t_ignore = ' \t'
+
+
 
 # =====================================================
 # IDENTIFICADORES
@@ -379,6 +391,7 @@ def t_NUMERO(t):
         t.value = int(t.value)
 
     return t
+
 
 # =====================================================
 # CADENAS
@@ -541,7 +554,7 @@ def mostrar_lexico():
             f"{tok.lineno}\n"
         )
 
-#------------------------------------------------------ARBOL SINTACTICO (PARSER)--------------------------------------------------
+#------------------------------------------------------ARBOL SINTACTICO (PARSER con yacc)--------------------------------------------------
 
 # Nodo AST
 class Node:
@@ -652,6 +665,47 @@ def p_stmt_while(p):
         [p[3], p[5]]
     )
 
+#FOR INCREMENT
+
+def p_for_update_increment(p):
+    '''
+    for_update : ID INCREMENTO
+    '''
+
+    nodo_id = Node(f"ID:{p[1]}")
+
+    nodo_uno = Node("NUM:1")
+
+    suma = Node("+", [nodo_id, nodo_uno])
+
+    p[0] = Node(
+        "ASIGN",
+        [
+            nodo_id,
+            suma
+        ]
+    )
+
+#FOR DECREMENT
+
+def p_for_update_decrement(p):
+    '''
+    for_update : ID DECREMENTO
+    '''
+
+    nodo_id = Node(f"ID:{p[1]}")
+    nodo_uno = Node("NUM:1")
+
+    resta = Node("-", [nodo_id, nodo_uno])
+
+    p[0] = Node(
+        "ASIGN",
+        [
+            nodo_id,
+            resta
+        ]
+    )
+
 # Tipos
 def p_type_int(p):
     "type : INT"
@@ -714,6 +768,48 @@ def p_expr_desc(p):
     '''
 
     p[0] = Node(f"DESC:{p[1]}")
+
+def p_assignment(p):
+    '''
+    assignment : ID ASIGNACION expr
+    '''
+
+    p[0] = Node(
+        "ASIGN",
+        [
+            Node(f"ID:{p[1]}"),
+            p[3]
+        ]
+    )
+
+def p_stmt_for(p):
+    '''
+    stmt : FOR PARENTESIS_IZQ for_init PUNTOCOMA condition PUNTOCOMA for_update PARENTESIS_DER block
+    '''
+
+    p[0] = Node(
+        "FOR",
+        [
+            p[3],  # init
+            p[5],  # condition
+            p[7],  # update
+            p[9]   # block
+        ]
+    )
+
+def p_for_init_assign(p):
+    '''
+    for_init : assignment
+    '''
+
+    p[0] = p[1]
+
+def p_for_update_assign(p):
+    '''
+    for_update : assignment
+    '''
+
+    p[0] = p[1]
 
 def p_empty(p):
     "empty :"
@@ -1321,6 +1417,39 @@ class TACGenerator:
             self.generate(node.children[1])
 
             # Volver al inicio para re-evaluar
+            self.code.append(f"goto {start_label}")
+            self.code.append(f"{end_label}:")
+
+        #FOR
+        elif node.label == "FOR":
+            init_node = node.children[0]
+            cond_node = node.children[1]
+            update_node = node.children[2]
+            body_node = node.children[3]
+
+            start_label = self.new_label()
+            end_label = f"END_{start_label}"
+
+            # inicialización
+            self.generate(init_node)
+
+            # inicio loop
+            self.code.append(f"{start_label}:")
+
+            # condición
+            cond = self.generate(cond_node)
+
+            self.code.append(
+                f"if {cond} == 0 goto {end_label}"
+            )
+
+            # cuerpo
+            self.generate(body_node)
+
+            # incremento
+            self.generate(update_node)
+
+            # repetir
             self.code.append(f"goto {start_label}")
             self.code.append(f"{end_label}:")
 
