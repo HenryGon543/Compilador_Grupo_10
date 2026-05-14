@@ -1,0 +1,15 @@
+int w = 900;
+int hola = 4000;
+
+print(w);
+print(hola);
+
+if(w > 500)(
+	print("es mayor");
+)
+
+int i;
+
+for(i = 10; i > 2; i--) (
+	print(i);
+)

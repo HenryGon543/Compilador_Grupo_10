@@ -49,11 +49,22 @@ def limpiar_contenido():
         widget.destroy()
 
 #Nombres
+
 tk.Label(
     content_frame,
     text="""
     Grupo No. 10
+    """,
+    fg="white",
+    bg="#7a7a7a",
+    font=("Arial", 16, "bold"),
+    justify="center",
+    
+).pack(pady=(30,10))
 
+tk.Label(
+    content_frame,
+    text="""
     Integrantes:
     Pablo Roldan 5090-23-13164
     Oliver Ruiz 5090-23-7889
@@ -61,12 +72,14 @@ tk.Label(
     Carlos Elías 5090-23-3510
     
     Instrucciones:
-    Para comenzar abra el editor de texto y cargue o cree un programa válido.""",
+    Para comenzar abra el editor de texto y 
+    cargue o cree un programa válido.""",
     fg="white",
     bg="#7a7a7a",
-    font=("Arial", 14, "bold"),
-    justify="center"
-).pack(pady=(200,10))
+    font=("Arial", 16),
+    justify="center",
+    
+).pack(pady=(5,5))
 
 #---------------------------------------------------------------EDITOR DE TEXTO--------------------------------------------------------
 def mostrar_editor():
@@ -152,7 +165,7 @@ def ocupar_ram():
     global ram
     if(ram == ""):
         ram = editor.get("1.0", "end-1c")
-
+    
 def obtener_codigo(): #FUNCION PARA OBTENER EL CODIGO
     codigo = editor.get("1.0", "end-1c") #esto quiere decir desde la primera linea hasta el final del texto (sin el salto de linea extra)
     return codigo    
@@ -247,9 +260,6 @@ def ventana_cargar(): #ventana emergente de cargar
 def cargar_archivo():
     nombre = texto_emergente2.get("1.0", "end-1c") + ".txt"
     global nombre_archivo_var
-    nombre_archivo_var.set("Archivo actual: "+ nombre)
-    print(nombre_archivo_var)
-    texto_emergente2.delete("1.0", "end") #limpia la ventana emergente
     direccion = "CODIGOS/" + nombre
     try:
         with open(direccion, 'r') as file:
@@ -257,11 +267,15 @@ def cargar_archivo():
         editor.delete("1.0", tk.END) #borra todo el texto del editor
         editor.insert("1.0",contenido) #inserta el contenido del archivo al editor
         Mbox("Éxito", "El codigo se cargó correctamente",0)
+        nombre_archivo_var.set("Archivo actual: "+ nombre)
+
         emergente2.destroy()
     except FileNotFoundError: #en caso de que el nombre no sea correcto
         Mbox("Error", "No se encuentra el archivo",0)
     except Exception as e: #en caso de cualquier otro error
         Mbox("Error", "Error",0)
+
+    texto_emergente2.delete("1.0", "end") #limpia la ventana emergente
 
 
 
@@ -925,7 +939,7 @@ def mostrar_arbol():
 
     titulo = tk.Label(
         content_frame,
-        text="Arbol Sintactico",
+        text="Arbol Sintáctico",
         font=("Segoe UI", 23, "bold"),
         fg="#2c3e50"
     )
@@ -1582,17 +1596,28 @@ def mostrar_tresdir():
     scroll_x = tk.Scrollbar(tresdir_frame, orient="horizontal")
     scroll_x.pack(side="bottom", fill="x")
 
-    # Configurar scroll conjunto
-    text_tac.config(yscrollcommand=scroll_y.set, xscrollcommand=scroll_x.set)
-    scroll_y.config(command=lambda *args: sync_scroll(*args))
-    scroll_x.config(command=text_tac.xview)
-
     # ============================
     # SINCRONIZAR SCROLL
     # ============================
-    def sync_scroll(*args):
-        text_tac.yview(*args)
-        line_numbers.yview(*args)
+
+    def on_textscroll(*args):
+
+        # mover scrollbar
+        scroll_y.set(*args)
+
+        # mover numeración
+        line_numbers.yview_moveto(args[0])
+
+
+    # Configuración scroll
+    text_tac.config(
+        yscrollcommand=on_textscroll,
+        xscrollcommand=scroll_x.set
+    )
+
+    scroll_y.config(command=text_tac.yview)
+
+    scroll_x.config(command=text_tac.xview)
 
     # ============================
     # INSERTAR TAC
@@ -1606,26 +1631,7 @@ def mostrar_tresdir():
     # Bloquear edición
     text_tac.config(state="disabled")
 
-    # ============================
-    # BOTÓN COPIAR
-    # ============================
-    def copiar_tac():
-        contenido = "\n".join(gen.code)
-        content_frame.clipboard_clear()
-        content_frame.clipboard_append(contenido)
-        content_frame.update()  # necesario en algunos sistemas
-
-    btn_copiar = tk.Button(
-        content_frame,
-        text="Copiar CTD",
-        font=("Segoe UI", 11, "bold"),
-        bg="#314F86",
-        fg="white",
-        padx=10,
-        pady=5,
-        command=copiar_tac
-    )
-    btn_copiar.pack(pady=5)
+    
 
 
 
@@ -2166,24 +2172,30 @@ def mostrar_tacoptimizer():
     scroll_x.pack(side="bottom", fill="x")
 
     # ============================================
+    # SINCRONIZAR SCROLL
+    # ============================================
+
+    def on_textscroll(*args):
+
+        # mover scrollbar
+        scroll_y.set(*args)
+
+        # sincronizar numeración
+        line_numbers.yview_moveto(args[0])
+
+
+    # ============================================
     # CONFIGURAR SCROLL
     # ============================================
 
     text_tac.config(
-        yscrollcommand=scroll_y.set,
+        yscrollcommand=on_textscroll,
         xscrollcommand=scroll_x.set
     )
 
-    scroll_y.config(command=lambda *args: sync_scroll(*args))
+    scroll_y.config(command=text_tac.yview)
+
     scroll_x.config(command=text_tac.xview)
-
-    # ============================================
-    # SINCRONIZAR SCROLL
-    # ============================================
-
-    def sync_scroll(*args):
-        text_tac.yview(*args)
-        line_numbers.yview(*args)
 
     # ============================================
     # INSERTAR TAC OPTIMIZADO
@@ -2205,36 +2217,7 @@ def mostrar_tacoptimizer():
 
     text_tac.config(state="disabled")
 
-    # ============================================
-    # COPIAR TAC
-    # ============================================
-
-    def copiar_tac():
-
-        contenido = "\n".join(optimized_code)
-
-        content_frame.clipboard_clear()
-
-        content_frame.clipboard_append(contenido)
-
-        content_frame.update()
-
-    # ============================================
-    # BOTÓN COPIAR
-    # ============================================
-
-    btn_copiar = tk.Button(
-        content_frame,
-        text="Copiar TAC Optimizado",
-        font=("Segoe UI", 11, "bold"),
-        bg="#314F86",
-        fg="white",
-        padx=10,
-        pady=5,
-        command=copiar_tac
-    )
-
-    btn_copiar.pack(pady=5)
+   
 
 #----------------------------------------------TRADUCTOR TAC A NASM----------------------------------------------
 
@@ -2683,7 +2666,7 @@ def mostrar_codigo_maquina():
 
     titulo = tk.Label(
         content_frame,
-        text="Código Máquina / NASM",
+        text="Código Máquina (.ASM)",
         font=("Segoe UI", 23, "bold"),
         fg="#2c3e50"
     )
@@ -2820,11 +2803,22 @@ def mostrar_codigo_maquina():
     # SINCRONIZAR SCROLL
     # ============================================
 
-    def sync_scroll(*args):
+    def on_textscroll(*args):
 
-        text_asm.yview(*args)
+        # mover scrollbar
+        scroll_y.set(*args)
 
-        line_numbers.yview(*args)
+        # mover numeración
+        line_numbers.yview_moveto(args[0])
+
+
+    text_asm.config(
+        yscrollcommand=on_textscroll,
+        xscrollcommand=scroll_x.set
+    )
+
+    scroll_y.config(command=text_asm.yview)
+
 
     # ============================================
     # INSERTAR ASM
@@ -2846,19 +2840,6 @@ def mostrar_codigo_maquina():
 
     text_asm.config(state="disabled")
 
-    # ============================================
-    # COPIAR ASM
-    # ============================================
-
-    def copiar_asm():
-
-        contenido = "\n".join(asm_code)
-
-        content_frame.clipboard_clear()
-
-        content_frame.clipboard_append(contenido)
-
-        content_frame.update()
 
 
     #GUARDAR ASM ANTES DE BOTON
@@ -2881,6 +2862,9 @@ def mostrar_codigo_maquina():
         )
         texto_emergente3.pack(pady=(20,2))
         
+        #AUTOFOCUS
+        texto_emergente3.focus_set()
+
         btn_guardar = tk.Button(
             emergente3,
             text = "Guardar",
@@ -2905,22 +2889,6 @@ def mostrar_codigo_maquina():
         emergente3.destroy()
 
         Mbox('exito', 'Se ha guardado el archivo .asm con exito', 0)
-    # ============================================
-    # BOTÓN COPIAR
-    # ============================================
-
-    btn_copiar = tk.Button(
-        content_frame,
-        text="Copiar ASM",
-        font=("Segoe UI", 11, "bold"),
-        bg="#314F86",
-        fg="white",
-        padx=10,
-        pady=5,
-        command=copiar_asm
-    )
-
-    btn_copiar.pack(pady=5)
 
     # ============================================
     # BOTÓN GUARDAR
@@ -2930,7 +2898,7 @@ def mostrar_codigo_maquina():
         content_frame,
         text="Guardar ASM",
         font=("Segoe UI", 11, "bold"),
-        bg="#1E8449",
+        bg="#FF0000",
         fg="white",
         padx=10,
         pady=5,
@@ -3051,7 +3019,7 @@ btn_lexico = tk.Button(
     menu_frame,
     text="2. Análisis léxico",
     #no se ejecuta instantaneamente con () porque lambda solo se ejecuta al dar click
-    command=lambda: mostrar_lexico() if nombre_archivo_var.get() != "Archivo actual: Ninguno" else no_hay_code(),
+    command=mostrar_lexico,
     width=20,
     pady=5
 )
@@ -3060,7 +3028,7 @@ btn_lexico.pack(pady=10)
 btn_sintactico = tk.Button(
     menu_frame,
     text="3. Árbol sintáctico",
-    command=lambda: mostrar_arbol() if nombre_archivo_var.get() != "Archivo actual: Ninguno" else no_hay_code(),
+    command=mostrar_arbol,
     width=20,
     pady=5
 )
@@ -3069,7 +3037,7 @@ btn_sintactico.pack(pady=10)
 btn_tabla = tk.Button(
     menu_frame,
     text="4. Tabla de símbolos",
-    command=lambda: mostrar_tabla() if nombre_archivo_var.get() != "Archivo actual: Ninguno" else no_hay_code(),
+    command=mostrar_tabla,
     width=20,
     pady=5
 )
@@ -3078,7 +3046,7 @@ btn_tabla.pack(pady=10)
 btn_semantico = tk.Button(
     menu_frame,
     text="5. Analizador semantico",
-    command=lambda: mostrar_semantico() if nombre_archivo_var.get() != "Archivo actual: Ninguno" else no_hay_code(),
+    command=mostrar_semantico,
     width=20,
     pady=5
 )
@@ -3087,7 +3055,7 @@ btn_semantico.pack(pady=10)
 btn_tresdir = tk.Button(
     menu_frame,
     text="6. Código intermedio",
-    command=lambda: mostrar_tresdir() if nombre_archivo_var.get() != "Archivo actual: Ninguno" else no_hay_code(),
+    command=mostrar_tresdir,
     width=20,
     pady=5
 )
@@ -3096,7 +3064,7 @@ btn_tresdir.pack(pady=10)
 btn_optimizado = tk.Button(
     menu_frame,
     text="7. Código optimizado",
-    command=lambda: mostrar_tacoptimizer() if nombre_archivo_var.get() != "Archivo actual: Ninguno" else no_hay_code(),
+    command=mostrar_tacoptimizer,
     width=20,
     pady=5
 )
@@ -3105,7 +3073,7 @@ btn_optimizado.pack(pady=10)
 btn_maquina = tk.Button(
     menu_frame,
     text="8. Código Máquina",
-    command=lambda: mostrar_codigo_maquina() if nombre_archivo_var.get() != "Archivo actual: Ninguno" else no_hay_code(),
+    command=mostrar_codigo_maquina,
     width=20,
     pady=5
 )
@@ -3114,7 +3082,7 @@ btn_maquina.pack(pady=10)
 btn_exe = tk.Button(
     menu_frame,
     text="9. Generar EXE",
-    command=lambda: mostrar_obj_exe()  if nombre_archivo_var.get() != "Archivo actual: Ninguno" else no_hay_code(),
+    command=mostrar_obj_exe,
     width=20,
     pady=5
 )
