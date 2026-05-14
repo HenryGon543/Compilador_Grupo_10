@@ -1,2 +1,0 @@
-int variable = 7;
-int x = 5 + 3;
