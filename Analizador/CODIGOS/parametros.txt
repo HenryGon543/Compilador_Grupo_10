@@ -1,0 +1,4 @@
+int suma (int a, int b);
+
+int x;
+x = suma (5, "hola");

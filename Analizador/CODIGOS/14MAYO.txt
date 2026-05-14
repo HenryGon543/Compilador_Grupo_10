@@ -1,0 +1,14 @@
+int a = 5;
+int b = 10;
+int c;
+
+c = (a + 0) * 1 + (2 * 3);
+
+print("hola");
+print(c);
+
+if(a ==5) (
+  print("opcion uno");
+) else (
+  print("opcion dos");
+)
