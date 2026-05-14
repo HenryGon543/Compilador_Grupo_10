@@ -1,0 +1,6 @@
+float x = 2.33;
+
+print(x);
+
+char c = 'A';
+print(c);

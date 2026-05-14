@@ -1,0 +1,1268 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    LLAVE_DER
+    LLAVE_IZQ
+    PRINTF
+    RETURN
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> stmts
+Rule 2     stmts_opt -> stmts
+Rule 3     stmts_opt -> empty
+Rule 4     stmts -> stmts stmt
+Rule 5     stmts -> stmt
+Rule 6     stmt -> type ID PUNTOCOMA
+Rule 7     stmt -> type ID ASIGNACION expr PUNTOCOMA
+Rule 8     stmt -> ID ASIGNACION expr PUNTOCOMA
+Rule 9     stmt -> PRINT PARENTESIS_IZQ args_opt PARENTESIS_DER PUNTOCOMA
+Rule 10    args_opt -> args_list
+Rule 11    args_opt -> empty
+Rule 12    args_list -> expr
+Rule 13    args_list -> args_list COMA expr
+Rule 14    stmt -> IF PARENTESIS_IZQ condition PARENTESIS_DER block
+Rule 15    stmt -> IF PARENTESIS_IZQ condition PARENTESIS_DER block ELSE block
+Rule 16    stmt -> WHILE PARENTESIS_IZQ condition PARENTESIS_DER block
+Rule 17    for_update -> ID INCREMENTO
+Rule 18    for_update -> ID DECREMENTO
+Rule 19    type -> INT
+Rule 20    type -> FLOAT
+Rule 21    block -> PARENTESIS_IZQ stmts_opt PARENTESIS_DER
+Rule 22    condition -> expr COMPARACION expr
+Rule 23    expr -> expr SUMA expr
+Rule 24    expr -> expr RESTA expr
+Rule 25    expr -> expr MULTIPLICACION expr
+Rule 26    expr -> expr DIVISION expr
+Rule 27    expr -> PARENTESIS_IZQ expr PARENTESIS_DER
+Rule 28    expr -> ID
+Rule 29    expr -> NUMERO
+Rule 30    expr -> CADENA
+Rule 31    assignment -> ID ASIGNACION expr
+Rule 32    stmt -> FOR PARENTESIS_IZQ for_init PUNTOCOMA condition PUNTOCOMA for_update PARENTESIS_DER block
+Rule 33    type -> CHAR
+Rule 34    expr -> CHAR_LITERAL
+Rule 35    for_init -> assignment
+Rule 36    for_update -> assignment
+Rule 37    empty -> <empty>
+
+Terminals, with rules where they appear
+
+ASIGNACION           : 7 8 31
+CADENA               : 30
+CHAR                 : 33
+CHAR_LITERAL         : 34
+COMA                 : 13
+COMPARACION          : 22
+DECREMENTO           : 18
+DIVISION             : 26
+ELSE                 : 15
+FLOAT                : 20
+FOR                  : 32
+ID                   : 6 7 8 17 18 28 31
+IF                   : 14 15
+INCREMENTO           : 17
+INT                  : 19
+LLAVE_DER            : 
+LLAVE_IZQ            : 
+MULTIPLICACION       : 25
+NUMERO               : 29
+PARENTESIS_DER       : 9 14 15 16 21 27 32
+PARENTESIS_IZQ       : 9 14 15 16 21 27 32
+PRINT                : 9
+PRINTF               : 
+PUNTOCOMA            : 6 7 8 9 32 32
+RESTA                : 24
+RETURN               : 
+SUMA                 : 23
+WHILE                : 16
+error                : 
+
+Nonterminals, with rules where they appear
+
+args_list            : 10 13
+args_opt             : 9
+assignment           : 35 36
+block                : 14 15 15 16 32
+condition            : 14 15 16 32
+empty                : 3 11
+expr                 : 7 8 12 13 22 22 23 23 24 24 25 25 26 26 27 31
+for_init             : 32
+for_update           : 32
+program              : 0
+stmt                 : 4 5
+stmts                : 1 2 4
+stmts_opt            : 21
+type                 : 6 7
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . program
+    (1) program -> . stmts
+    (4) stmts -> . stmts stmt
+    (5) stmts -> . stmt
+    (6) stmt -> . type ID PUNTOCOMA
+    (7) stmt -> . type ID ASIGNACION expr PUNTOCOMA
+    (8) stmt -> . ID ASIGNACION expr PUNTOCOMA
+    (9) stmt -> . PRINT PARENTESIS_IZQ args_opt PARENTESIS_DER PUNTOCOMA
+    (14) stmt -> . IF PARENTESIS_IZQ condition PARENTESIS_DER block
+    (15) stmt -> . IF PARENTESIS_IZQ condition PARENTESIS_DER block ELSE block
+    (16) stmt -> . WHILE PARENTESIS_IZQ condition PARENTESIS_DER block
+    (32) stmt -> . FOR PARENTESIS_IZQ for_init PUNTOCOMA condition PUNTOCOMA for_update PARENTESIS_DER block
+    (19) type -> . INT
+    (20) type -> . FLOAT
+    (33) type -> . CHAR
+
+    ID              shift and go to state 5
+    PRINT           shift and go to state 6
+    IF              shift and go to state 7
+    WHILE           shift and go to state 8
+    FOR             shift and go to state 9
+    INT             shift and go to state 10
+    FLOAT           shift and go to state 11
+    CHAR            shift and go to state 12
+
+    program                        shift and go to state 1
+    stmts                          shift and go to state 2
+    stmt                           shift and go to state 3
+    type                           shift and go to state 4
+
+state 1
+
+    (0) S' -> program .
+
+
+
+state 2
+
+    (1) program -> stmts .
+    (4) stmts -> stmts . stmt
+    (6) stmt -> . type ID PUNTOCOMA
+    (7) stmt -> . type ID ASIGNACION expr PUNTOCOMA
+    (8) stmt -> . ID ASIGNACION expr PUNTOCOMA
+    (9) stmt -> . PRINT PARENTESIS_IZQ args_opt PARENTESIS_DER PUNTOCOMA
+    (14) stmt -> . IF PARENTESIS_IZQ condition PARENTESIS_DER block
+    (15) stmt -> . IF PARENTESIS_IZQ condition PARENTESIS_DER block ELSE block
+    (16) stmt -> . WHILE PARENTESIS_IZQ condition PARENTESIS_DER block
+    (32) stmt -> . FOR PARENTESIS_IZQ for_init PUNTOCOMA condition PUNTOCOMA for_update PARENTESIS_DER block
+    (19) type -> . INT
+    (20) type -> . FLOAT
+    (33) type -> . CHAR
+
+    $end            reduce using rule 1 (program -> stmts .)
+    ID              shift and go to state 5
+    PRINT           shift and go to state 6
+    IF              shift and go to state 7
+    WHILE           shift and go to state 8
+    FOR             shift and go to state 9
+    INT             shift and go to state 10
+    FLOAT           shift and go to state 11
+    CHAR            shift and go to state 12
+
+    stmt                           shift and go to state 13
+    type                           shift and go to state 4
+
+state 3
+
+    (5) stmts -> stmt .
+
+    ID              reduce using rule 5 (stmts -> stmt .)
+    PRINT           reduce using rule 5 (stmts -> stmt .)
+    IF              reduce using rule 5 (stmts -> stmt .)
+    WHILE           reduce using rule 5 (stmts -> stmt .)
+    FOR             reduce using rule 5 (stmts -> stmt .)
+    INT             reduce using rule 5 (stmts -> stmt .)
+    FLOAT           reduce using rule 5 (stmts -> stmt .)
+    CHAR            reduce using rule 5 (stmts -> stmt .)
+    $end            reduce using rule 5 (stmts -> stmt .)
+    PARENTESIS_DER  reduce using rule 5 (stmts -> stmt .)
+
+
+state 4
+
+    (6) stmt -> type . ID PUNTOCOMA
+    (7) stmt -> type . ID ASIGNACION expr PUNTOCOMA
+
+    ID              shift and go to state 14
+
+
+state 5
+
+    (8) stmt -> ID . ASIGNACION expr PUNTOCOMA
+
+    ASIGNACION      shift and go to state 15
+
+
+state 6
+
+    (9) stmt -> PRINT . PARENTESIS_IZQ args_opt PARENTESIS_DER PUNTOCOMA
+
+    PARENTESIS_IZQ  shift and go to state 16
+
+
+state 7
+
+    (14) stmt -> IF . PARENTESIS_IZQ condition PARENTESIS_DER block
+    (15) stmt -> IF . PARENTESIS_IZQ condition PARENTESIS_DER block ELSE block
+
+    PARENTESIS_IZQ  shift and go to state 17
+
+
+state 8
+
+    (16) stmt -> WHILE . PARENTESIS_IZQ condition PARENTESIS_DER block
+
+    PARENTESIS_IZQ  shift and go to state 18
+
+
+state 9
+
+    (32) stmt -> FOR . PARENTESIS_IZQ for_init PUNTOCOMA condition PUNTOCOMA for_update PARENTESIS_DER block
+
+    PARENTESIS_IZQ  shift and go to state 19
+
+
+state 10
+
+    (19) type -> INT .
+
+    ID              reduce using rule 19 (type -> INT .)
+
+
+state 11
+
+    (20) type -> FLOAT .
+
+    ID              reduce using rule 20 (type -> FLOAT .)
+
+
+state 12
+
+    (33) type -> CHAR .
+
+    ID              reduce using rule 33 (type -> CHAR .)
+
+
+state 13
+
+    (4) stmts -> stmts stmt .
+
+    ID              reduce using rule 4 (stmts -> stmts stmt .)
+    PRINT           reduce using rule 4 (stmts -> stmts stmt .)
+    IF              reduce using rule 4 (stmts -> stmts stmt .)
+    WHILE           reduce using rule 4 (stmts -> stmts stmt .)
+    FOR             reduce using rule 4 (stmts -> stmts stmt .)
+    INT             reduce using rule 4 (stmts -> stmts stmt .)
+    FLOAT           reduce using rule 4 (stmts -> stmts stmt .)
+    CHAR            reduce using rule 4 (stmts -> stmts stmt .)
+    $end            reduce using rule 4 (stmts -> stmts stmt .)
+    PARENTESIS_DER  reduce using rule 4 (stmts -> stmts stmt .)
+
+
+state 14
+
+    (6) stmt -> type ID . PUNTOCOMA
+    (7) stmt -> type ID . ASIGNACION expr PUNTOCOMA
+
+    PUNTOCOMA       shift and go to state 20
+    ASIGNACION      shift and go to state 21
+
+
+state 15
+
+    (8) stmt -> ID ASIGNACION . expr PUNTOCOMA
+    (23) expr -> . expr SUMA expr
+    (24) expr -> . expr RESTA expr
+    (25) expr -> . expr MULTIPLICACION expr
+    (26) expr -> . expr DIVISION expr
+    (27) expr -> . PARENTESIS_IZQ expr PARENTESIS_DER
+    (28) expr -> . ID
+    (29) expr -> . NUMERO
+    (30) expr -> . CADENA
+    (34) expr -> . CHAR_LITERAL
+
+    PARENTESIS_IZQ  shift and go to state 24
+    ID              shift and go to state 22
+    NUMERO          shift and go to state 25
+    CADENA          shift and go to state 26
+    CHAR_LITERAL    shift and go to state 27
+
+    expr                           shift and go to state 23
+
+state 16
+
+    (9) stmt -> PRINT PARENTESIS_IZQ . args_opt PARENTESIS_DER PUNTOCOMA
+    (10) args_opt -> . args_list
+    (11) args_opt -> . empty
+    (12) args_list -> . expr
+    (13) args_list -> . args_list COMA expr
+    (37) empty -> .
+    (23) expr -> . expr SUMA expr
+    (24) expr -> . expr RESTA expr
+    (25) expr -> . expr MULTIPLICACION expr
+    (26) expr -> . expr DIVISION expr
+    (27) expr -> . PARENTESIS_IZQ expr PARENTESIS_DER
+    (28) expr -> . ID
+    (29) expr -> . NUMERO
+    (30) expr -> . CADENA
+    (34) expr -> . CHAR_LITERAL
+
+    PARENTESIS_DER  reduce using rule 37 (empty -> .)
+    PARENTESIS_IZQ  shift and go to state 24
+    ID              shift and go to state 22
+    NUMERO          shift and go to state 25
+    CADENA          shift and go to state 26
+    CHAR_LITERAL    shift and go to state 27
+
+    args_opt                       shift and go to state 28
+    args_list                      shift and go to state 29
+    empty                          shift and go to state 30
+    expr                           shift and go to state 31
+
+state 17
+
+    (14) stmt -> IF PARENTESIS_IZQ . condition PARENTESIS_DER block
+    (15) stmt -> IF PARENTESIS_IZQ . condition PARENTESIS_DER block ELSE block
+    (22) condition -> . expr COMPARACION expr
+    (23) expr -> . expr SUMA expr
+    (24) expr -> . expr RESTA expr
+    (25) expr -> . expr MULTIPLICACION expr
+    (26) expr -> . expr DIVISION expr
+    (27) expr -> . PARENTESIS_IZQ expr PARENTESIS_DER
+    (28) expr -> . ID
+    (29) expr -> . NUMERO
+    (30) expr -> . CADENA
+    (34) expr -> . CHAR_LITERAL
+
+    PARENTESIS_IZQ  shift and go to state 24
+    ID              shift and go to state 22
+    NUMERO          shift and go to state 25
+    CADENA          shift and go to state 26
+    CHAR_LITERAL    shift and go to state 27
+
+    condition                      shift and go to state 32
+    expr                           shift and go to state 33
+
+state 18
+
+    (16) stmt -> WHILE PARENTESIS_IZQ . condition PARENTESIS_DER block
+    (22) condition -> . expr COMPARACION expr
+    (23) expr -> . expr SUMA expr
+    (24) expr -> . expr RESTA expr
+    (25) expr -> . expr MULTIPLICACION expr
+    (26) expr -> . expr DIVISION expr
+    (27) expr -> . PARENTESIS_IZQ expr PARENTESIS_DER
+    (28) expr -> . ID
+    (29) expr -> . NUMERO
+    (30) expr -> . CADENA
+    (34) expr -> . CHAR_LITERAL
+
+    PARENTESIS_IZQ  shift and go to state 24
+    ID              shift and go to state 22
+    NUMERO          shift and go to state 25
+    CADENA          shift and go to state 26
+    CHAR_LITERAL    shift and go to state 27
+
+    condition                      shift and go to state 34
+    expr                           shift and go to state 33
+
+state 19
+
+    (32) stmt -> FOR PARENTESIS_IZQ . for_init PUNTOCOMA condition PUNTOCOMA for_update PARENTESIS_DER block
+    (35) for_init -> . assignment
+    (31) assignment -> . ID ASIGNACION expr
+
+    ID              shift and go to state 37
+
+    for_init                       shift and go to state 35
+    assignment                     shift and go to state 36
+
+state 20
+
+    (6) stmt -> type ID PUNTOCOMA .
+
+    ID              reduce using rule 6 (stmt -> type ID PUNTOCOMA .)
+    PRINT           reduce using rule 6 (stmt -> type ID PUNTOCOMA .)
+    IF              reduce using rule 6 (stmt -> type ID PUNTOCOMA .)
+    WHILE           reduce using rule 6 (stmt -> type ID PUNTOCOMA .)
+    FOR             reduce using rule 6 (stmt -> type ID PUNTOCOMA .)
+    INT             reduce using rule 6 (stmt -> type ID PUNTOCOMA .)
+    FLOAT           reduce using rule 6 (stmt -> type ID PUNTOCOMA .)
+    CHAR            reduce using rule 6 (stmt -> type ID PUNTOCOMA .)
+    $end            reduce using rule 6 (stmt -> type ID PUNTOCOMA .)
+    PARENTESIS_DER  reduce using rule 6 (stmt -> type ID PUNTOCOMA .)
+
+
+state 21
+
+    (7) stmt -> type ID ASIGNACION . expr PUNTOCOMA
+    (23) expr -> . expr SUMA expr
+    (24) expr -> . expr RESTA expr
+    (25) expr -> . expr MULTIPLICACION expr
+    (26) expr -> . expr DIVISION expr
+    (27) expr -> . PARENTESIS_IZQ expr PARENTESIS_DER
+    (28) expr -> . ID
+    (29) expr -> . NUMERO
+    (30) expr -> . CADENA
+    (34) expr -> . CHAR_LITERAL
+
+    PARENTESIS_IZQ  shift and go to state 24
+    ID              shift and go to state 22
+    NUMERO          shift and go to state 25
+    CADENA          shift and go to state 26
+    CHAR_LITERAL    shift and go to state 27
+
+    expr                           shift and go to state 38
+
+state 22
+
+    (28) expr -> ID .
+
+    PUNTOCOMA       reduce using rule 28 (expr -> ID .)
+    SUMA            reduce using rule 28 (expr -> ID .)
+    RESTA           reduce using rule 28 (expr -> ID .)
+    MULTIPLICACION  reduce using rule 28 (expr -> ID .)
+    DIVISION        reduce using rule 28 (expr -> ID .)
+    COMA            reduce using rule 28 (expr -> ID .)
+    PARENTESIS_DER  reduce using rule 28 (expr -> ID .)
+    COMPARACION     reduce using rule 28 (expr -> ID .)
+
+
+state 23
+
+    (8) stmt -> ID ASIGNACION expr . PUNTOCOMA
+    (23) expr -> expr . SUMA expr
+    (24) expr -> expr . RESTA expr
+    (25) expr -> expr . MULTIPLICACION expr
+    (26) expr -> expr . DIVISION expr
+
+    PUNTOCOMA       shift and go to state 39
+    SUMA            shift and go to state 40
+    RESTA           shift and go to state 41
+    MULTIPLICACION  shift and go to state 42
+    DIVISION        shift and go to state 43
+
+
+state 24
+
+    (27) expr -> PARENTESIS_IZQ . expr PARENTESIS_DER
+    (23) expr -> . expr SUMA expr
+    (24) expr -> . expr RESTA expr
+    (25) expr -> . expr MULTIPLICACION expr
+    (26) expr -> . expr DIVISION expr
+    (27) expr -> . PARENTESIS_IZQ expr PARENTESIS_DER
+    (28) expr -> . ID
+    (29) expr -> . NUMERO
+    (30) expr -> . CADENA
+    (34) expr -> . CHAR_LITERAL
+
+    PARENTESIS_IZQ  shift and go to state 24
+    ID              shift and go to state 22
+    NUMERO          shift and go to state 25
+    CADENA          shift and go to state 26
+    CHAR_LITERAL    shift and go to state 27
+
+    expr                           shift and go to state 44
+
+state 25
+
+    (29) expr -> NUMERO .
+
+    PUNTOCOMA       reduce using rule 29 (expr -> NUMERO .)
+    SUMA            reduce using rule 29 (expr -> NUMERO .)
+    RESTA           reduce using rule 29 (expr -> NUMERO .)
+    MULTIPLICACION  reduce using rule 29 (expr -> NUMERO .)
+    DIVISION        reduce using rule 29 (expr -> NUMERO .)
+    COMA            reduce using rule 29 (expr -> NUMERO .)
+    PARENTESIS_DER  reduce using rule 29 (expr -> NUMERO .)
+    COMPARACION     reduce using rule 29 (expr -> NUMERO .)
+
+
+state 26
+
+    (30) expr -> CADENA .
+
+    PUNTOCOMA       reduce using rule 30 (expr -> CADENA .)
+    SUMA            reduce using rule 30 (expr -> CADENA .)
+    RESTA           reduce using rule 30 (expr -> CADENA .)
+    MULTIPLICACION  reduce using rule 30 (expr -> CADENA .)
+    DIVISION        reduce using rule 30 (expr -> CADENA .)
+    COMA            reduce using rule 30 (expr -> CADENA .)
+    PARENTESIS_DER  reduce using rule 30 (expr -> CADENA .)
+    COMPARACION     reduce using rule 30 (expr -> CADENA .)
+
+
+state 27
+
+    (34) expr -> CHAR_LITERAL .
+
+    PUNTOCOMA       reduce using rule 34 (expr -> CHAR_LITERAL .)
+    SUMA            reduce using rule 34 (expr -> CHAR_LITERAL .)
+    RESTA           reduce using rule 34 (expr -> CHAR_LITERAL .)
+    MULTIPLICACION  reduce using rule 34 (expr -> CHAR_LITERAL .)
+    DIVISION        reduce using rule 34 (expr -> CHAR_LITERAL .)
+    COMA            reduce using rule 34 (expr -> CHAR_LITERAL .)
+    PARENTESIS_DER  reduce using rule 34 (expr -> CHAR_LITERAL .)
+    COMPARACION     reduce using rule 34 (expr -> CHAR_LITERAL .)
+
+
+state 28
+
+    (9) stmt -> PRINT PARENTESIS_IZQ args_opt . PARENTESIS_DER PUNTOCOMA
+
+    PARENTESIS_DER  shift and go to state 45
+
+
+state 29
+
+    (10) args_opt -> args_list .
+    (13) args_list -> args_list . COMA expr
+
+    PARENTESIS_DER  reduce using rule 10 (args_opt -> args_list .)
+    COMA            shift and go to state 46
+
+
+state 30
+
+    (11) args_opt -> empty .
+
+    PARENTESIS_DER  reduce using rule 11 (args_opt -> empty .)
+
+
+state 31
+
+    (12) args_list -> expr .
+    (23) expr -> expr . SUMA expr
+    (24) expr -> expr . RESTA expr
+    (25) expr -> expr . MULTIPLICACION expr
+    (26) expr -> expr . DIVISION expr
+
+    COMA            reduce using rule 12 (args_list -> expr .)
+    PARENTESIS_DER  reduce using rule 12 (args_list -> expr .)
+    SUMA            shift and go to state 40
+    RESTA           shift and go to state 41
+    MULTIPLICACION  shift and go to state 42
+    DIVISION        shift and go to state 43
+
+
+state 32
+
+    (14) stmt -> IF PARENTESIS_IZQ condition . PARENTESIS_DER block
+    (15) stmt -> IF PARENTESIS_IZQ condition . PARENTESIS_DER block ELSE block
+
+    PARENTESIS_DER  shift and go to state 47
+
+
+state 33
+
+    (22) condition -> expr . COMPARACION expr
+    (23) expr -> expr . SUMA expr
+    (24) expr -> expr . RESTA expr
+    (25) expr -> expr . MULTIPLICACION expr
+    (26) expr -> expr . DIVISION expr
+
+    COMPARACION     shift and go to state 48
+    SUMA            shift and go to state 40
+    RESTA           shift and go to state 41
+    MULTIPLICACION  shift and go to state 42
+    DIVISION        shift and go to state 43
+
+
+state 34
+
+    (16) stmt -> WHILE PARENTESIS_IZQ condition . PARENTESIS_DER block
+
+    PARENTESIS_DER  shift and go to state 49
+
+
+state 35
+
+    (32) stmt -> FOR PARENTESIS_IZQ for_init . PUNTOCOMA condition PUNTOCOMA for_update PARENTESIS_DER block
+
+    PUNTOCOMA       shift and go to state 50
+
+
+state 36
+
+    (35) for_init -> assignment .
+
+    PUNTOCOMA       reduce using rule 35 (for_init -> assignment .)
+
+
+state 37
+
+    (31) assignment -> ID . ASIGNACION expr
+
+    ASIGNACION      shift and go to state 51
+
+
+state 38
+
+    (7) stmt -> type ID ASIGNACION expr . PUNTOCOMA
+    (23) expr -> expr . SUMA expr
+    (24) expr -> expr . RESTA expr
+    (25) expr -> expr . MULTIPLICACION expr
+    (26) expr -> expr . DIVISION expr
+
+    PUNTOCOMA       shift and go to state 52
+    SUMA            shift and go to state 40
+    RESTA           shift and go to state 41
+    MULTIPLICACION  shift and go to state 42
+    DIVISION        shift and go to state 43
+
+
+state 39
+
+    (8) stmt -> ID ASIGNACION expr PUNTOCOMA .
+
+    ID              reduce using rule 8 (stmt -> ID ASIGNACION expr PUNTOCOMA .)
+    PRINT           reduce using rule 8 (stmt -> ID ASIGNACION expr PUNTOCOMA .)
+    IF              reduce using rule 8 (stmt -> ID ASIGNACION expr PUNTOCOMA .)
+    WHILE           reduce using rule 8 (stmt -> ID ASIGNACION expr PUNTOCOMA .)
+    FOR             reduce using rule 8 (stmt -> ID ASIGNACION expr PUNTOCOMA .)
+    INT             reduce using rule 8 (stmt -> ID ASIGNACION expr PUNTOCOMA .)
+    FLOAT           reduce using rule 8 (stmt -> ID ASIGNACION expr PUNTOCOMA .)
+    CHAR            reduce using rule 8 (stmt -> ID ASIGNACION expr PUNTOCOMA .)
+    $end            reduce using rule 8 (stmt -> ID ASIGNACION expr PUNTOCOMA .)
+    PARENTESIS_DER  reduce using rule 8 (stmt -> ID ASIGNACION expr PUNTOCOMA .)
+
+
+state 40
+
+    (23) expr -> expr SUMA . expr
+    (23) expr -> . expr SUMA expr
+    (24) expr -> . expr RESTA expr
+    (25) expr -> . expr MULTIPLICACION expr
+    (26) expr -> . expr DIVISION expr
+    (27) expr -> . PARENTESIS_IZQ expr PARENTESIS_DER
+    (28) expr -> . ID
+    (29) expr -> . NUMERO
+    (30) expr -> . CADENA
+    (34) expr -> . CHAR_LITERAL
+
+    PARENTESIS_IZQ  shift and go to state 24
+    ID              shift and go to state 22
+    NUMERO          shift and go to state 25
+    CADENA          shift and go to state 26
+    CHAR_LITERAL    shift and go to state 27
+
+    expr                           shift and go to state 53
+
+state 41
+
+    (24) expr -> expr RESTA . expr
+    (23) expr -> . expr SUMA expr
+    (24) expr -> . expr RESTA expr
+    (25) expr -> . expr MULTIPLICACION expr
+    (26) expr -> . expr DIVISION expr
+    (27) expr -> . PARENTESIS_IZQ expr PARENTESIS_DER
+    (28) expr -> . ID
+    (29) expr -> . NUMERO
+    (30) expr -> . CADENA
+    (34) expr -> . CHAR_LITERAL
+
+    PARENTESIS_IZQ  shift and go to state 24
+    ID              shift and go to state 22
+    NUMERO          shift and go to state 25
+    CADENA          shift and go to state 26
+    CHAR_LITERAL    shift and go to state 27
+
+    expr                           shift and go to state 54
+
+state 42
+
+    (25) expr -> expr MULTIPLICACION . expr
+    (23) expr -> . expr SUMA expr
+    (24) expr -> . expr RESTA expr
+    (25) expr -> . expr MULTIPLICACION expr
+    (26) expr -> . expr DIVISION expr
+    (27) expr -> . PARENTESIS_IZQ expr PARENTESIS_DER
+    (28) expr -> . ID
+    (29) expr -> . NUMERO
+    (30) expr -> . CADENA
+    (34) expr -> . CHAR_LITERAL
+
+    PARENTESIS_IZQ  shift and go to state 24
+    ID              shift and go to state 22
+    NUMERO          shift and go to state 25
+    CADENA          shift and go to state 26
+    CHAR_LITERAL    shift and go to state 27
+
+    expr                           shift and go to state 55
+
+state 43
+
+    (26) expr -> expr DIVISION . expr
+    (23) expr -> . expr SUMA expr
+    (24) expr -> . expr RESTA expr
+    (25) expr -> . expr MULTIPLICACION expr
+    (26) expr -> . expr DIVISION expr
+    (27) expr -> . PARENTESIS_IZQ expr PARENTESIS_DER
+    (28) expr -> . ID
+    (29) expr -> . NUMERO
+    (30) expr -> . CADENA
+    (34) expr -> . CHAR_LITERAL
+
+    PARENTESIS_IZQ  shift and go to state 24
+    ID              shift and go to state 22
+    NUMERO          shift and go to state 25
+    CADENA          shift and go to state 26
+    CHAR_LITERAL    shift and go to state 27
+
+    expr                           shift and go to state 56
+
+state 44
+
+    (27) expr -> PARENTESIS_IZQ expr . PARENTESIS_DER
+    (23) expr -> expr . SUMA expr
+    (24) expr -> expr . RESTA expr
+    (25) expr -> expr . MULTIPLICACION expr
+    (26) expr -> expr . DIVISION expr
+
+    PARENTESIS_DER  shift and go to state 57
+    SUMA            shift and go to state 40
+    RESTA           shift and go to state 41
+    MULTIPLICACION  shift and go to state 42
+    DIVISION        shift and go to state 43
+
+
+state 45
+
+    (9) stmt -> PRINT PARENTESIS_IZQ args_opt PARENTESIS_DER . PUNTOCOMA
+
+    PUNTOCOMA       shift and go to state 58
+
+
+state 46
+
+    (13) args_list -> args_list COMA . expr
+    (23) expr -> . expr SUMA expr
+    (24) expr -> . expr RESTA expr
+    (25) expr -> . expr MULTIPLICACION expr
+    (26) expr -> . expr DIVISION expr
+    (27) expr -> . PARENTESIS_IZQ expr PARENTESIS_DER
+    (28) expr -> . ID
+    (29) expr -> . NUMERO
+    (30) expr -> . CADENA
+    (34) expr -> . CHAR_LITERAL
+
+    PARENTESIS_IZQ  shift and go to state 24
+    ID              shift and go to state 22
+    NUMERO          shift and go to state 25
+    CADENA          shift and go to state 26
+    CHAR_LITERAL    shift and go to state 27
+
+    expr                           shift and go to state 59
+
+state 47
+
+    (14) stmt -> IF PARENTESIS_IZQ condition PARENTESIS_DER . block
+    (15) stmt -> IF PARENTESIS_IZQ condition PARENTESIS_DER . block ELSE block
+    (21) block -> . PARENTESIS_IZQ stmts_opt PARENTESIS_DER
+
+    PARENTESIS_IZQ  shift and go to state 60
+
+    block                          shift and go to state 61
+
+state 48
+
+    (22) condition -> expr COMPARACION . expr
+    (23) expr -> . expr SUMA expr
+    (24) expr -> . expr RESTA expr
+    (25) expr -> . expr MULTIPLICACION expr
+    (26) expr -> . expr DIVISION expr
+    (27) expr -> . PARENTESIS_IZQ expr PARENTESIS_DER
+    (28) expr -> . ID
+    (29) expr -> . NUMERO
+    (30) expr -> . CADENA
+    (34) expr -> . CHAR_LITERAL
+
+    PARENTESIS_IZQ  shift and go to state 24
+    ID              shift and go to state 22
+    NUMERO          shift and go to state 25
+    CADENA          shift and go to state 26
+    CHAR_LITERAL    shift and go to state 27
+
+    expr                           shift and go to state 62
+
+state 49
+
+    (16) stmt -> WHILE PARENTESIS_IZQ condition PARENTESIS_DER . block
+    (21) block -> . PARENTESIS_IZQ stmts_opt PARENTESIS_DER
+
+    PARENTESIS_IZQ  shift and go to state 60
+
+    block                          shift and go to state 63
+
+state 50
+
+    (32) stmt -> FOR PARENTESIS_IZQ for_init PUNTOCOMA . condition PUNTOCOMA for_update PARENTESIS_DER block
+    (22) condition -> . expr COMPARACION expr
+    (23) expr -> . expr SUMA expr
+    (24) expr -> . expr RESTA expr
+    (25) expr -> . expr MULTIPLICACION expr
+    (26) expr -> . expr DIVISION expr
+    (27) expr -> . PARENTESIS_IZQ expr PARENTESIS_DER
+    (28) expr -> . ID
+    (29) expr -> . NUMERO
+    (30) expr -> . CADENA
+    (34) expr -> . CHAR_LITERAL
+
+    PARENTESIS_IZQ  shift and go to state 24
+    ID              shift and go to state 22
+    NUMERO          shift and go to state 25
+    CADENA          shift and go to state 26
+    CHAR_LITERAL    shift and go to state 27
+
+    condition                      shift and go to state 64
+    expr                           shift and go to state 33
+
+state 51
+
+    (31) assignment -> ID ASIGNACION . expr
+    (23) expr -> . expr SUMA expr
+    (24) expr -> . expr RESTA expr
+    (25) expr -> . expr MULTIPLICACION expr
+    (26) expr -> . expr DIVISION expr
+    (27) expr -> . PARENTESIS_IZQ expr PARENTESIS_DER
+    (28) expr -> . ID
+    (29) expr -> . NUMERO
+    (30) expr -> . CADENA
+    (34) expr -> . CHAR_LITERAL
+
+    PARENTESIS_IZQ  shift and go to state 24
+    ID              shift and go to state 22
+    NUMERO          shift and go to state 25
+    CADENA          shift and go to state 26
+    CHAR_LITERAL    shift and go to state 27
+
+    expr                           shift and go to state 65
+
+state 52
+
+    (7) stmt -> type ID ASIGNACION expr PUNTOCOMA .
+
+    ID              reduce using rule 7 (stmt -> type ID ASIGNACION expr PUNTOCOMA .)
+    PRINT           reduce using rule 7 (stmt -> type ID ASIGNACION expr PUNTOCOMA .)
+    IF              reduce using rule 7 (stmt -> type ID ASIGNACION expr PUNTOCOMA .)
+    WHILE           reduce using rule 7 (stmt -> type ID ASIGNACION expr PUNTOCOMA .)
+    FOR             reduce using rule 7 (stmt -> type ID ASIGNACION expr PUNTOCOMA .)
+    INT             reduce using rule 7 (stmt -> type ID ASIGNACION expr PUNTOCOMA .)
+    FLOAT           reduce using rule 7 (stmt -> type ID ASIGNACION expr PUNTOCOMA .)
+    CHAR            reduce using rule 7 (stmt -> type ID ASIGNACION expr PUNTOCOMA .)
+    $end            reduce using rule 7 (stmt -> type ID ASIGNACION expr PUNTOCOMA .)
+    PARENTESIS_DER  reduce using rule 7 (stmt -> type ID ASIGNACION expr PUNTOCOMA .)
+
+
+state 53
+
+    (23) expr -> expr SUMA expr .
+    (23) expr -> expr . SUMA expr
+    (24) expr -> expr . RESTA expr
+    (25) expr -> expr . MULTIPLICACION expr
+    (26) expr -> expr . DIVISION expr
+
+    PUNTOCOMA       reduce using rule 23 (expr -> expr SUMA expr .)
+    SUMA            reduce using rule 23 (expr -> expr SUMA expr .)
+    RESTA           reduce using rule 23 (expr -> expr SUMA expr .)
+    COMA            reduce using rule 23 (expr -> expr SUMA expr .)
+    PARENTESIS_DER  reduce using rule 23 (expr -> expr SUMA expr .)
+    COMPARACION     reduce using rule 23 (expr -> expr SUMA expr .)
+    MULTIPLICACION  shift and go to state 42
+    DIVISION        shift and go to state 43
+
+  ! MULTIPLICACION  [ reduce using rule 23 (expr -> expr SUMA expr .) ]
+  ! DIVISION        [ reduce using rule 23 (expr -> expr SUMA expr .) ]
+  ! SUMA            [ shift and go to state 40 ]
+  ! RESTA           [ shift and go to state 41 ]
+
+
+state 54
+
+    (24) expr -> expr RESTA expr .
+    (23) expr -> expr . SUMA expr
+    (24) expr -> expr . RESTA expr
+    (25) expr -> expr . MULTIPLICACION expr
+    (26) expr -> expr . DIVISION expr
+
+    PUNTOCOMA       reduce using rule 24 (expr -> expr RESTA expr .)
+    SUMA            reduce using rule 24 (expr -> expr RESTA expr .)
+    RESTA           reduce using rule 24 (expr -> expr RESTA expr .)
+    COMA            reduce using rule 24 (expr -> expr RESTA expr .)
+    PARENTESIS_DER  reduce using rule 24 (expr -> expr RESTA expr .)
+    COMPARACION     reduce using rule 24 (expr -> expr RESTA expr .)
+    MULTIPLICACION  shift and go to state 42
+    DIVISION        shift and go to state 43
+
+  ! MULTIPLICACION  [ reduce using rule 24 (expr -> expr RESTA expr .) ]
+  ! DIVISION        [ reduce using rule 24 (expr -> expr RESTA expr .) ]
+  ! SUMA            [ shift and go to state 40 ]
+  ! RESTA           [ shift and go to state 41 ]
+
+
+state 55
+
+    (25) expr -> expr MULTIPLICACION expr .
+    (23) expr -> expr . SUMA expr
+    (24) expr -> expr . RESTA expr
+    (25) expr -> expr . MULTIPLICACION expr
+    (26) expr -> expr . DIVISION expr
+
+    PUNTOCOMA       reduce using rule 25 (expr -> expr MULTIPLICACION expr .)
+    SUMA            reduce using rule 25 (expr -> expr MULTIPLICACION expr .)
+    RESTA           reduce using rule 25 (expr -> expr MULTIPLICACION expr .)
+    MULTIPLICACION  reduce using rule 25 (expr -> expr MULTIPLICACION expr .)
+    DIVISION        reduce using rule 25 (expr -> expr MULTIPLICACION expr .)
+    COMA            reduce using rule 25 (expr -> expr MULTIPLICACION expr .)
+    PARENTESIS_DER  reduce using rule 25 (expr -> expr MULTIPLICACION expr .)
+    COMPARACION     reduce using rule 25 (expr -> expr MULTIPLICACION expr .)
+
+  ! SUMA            [ shift and go to state 40 ]
+  ! RESTA           [ shift and go to state 41 ]
+  ! MULTIPLICACION  [ shift and go to state 42 ]
+  ! DIVISION        [ shift and go to state 43 ]
+
+
+state 56
+
+    (26) expr -> expr DIVISION expr .
+    (23) expr -> expr . SUMA expr
+    (24) expr -> expr . RESTA expr
+    (25) expr -> expr . MULTIPLICACION expr
+    (26) expr -> expr . DIVISION expr
+
+    PUNTOCOMA       reduce using rule 26 (expr -> expr DIVISION expr .)
+    SUMA            reduce using rule 26 (expr -> expr DIVISION expr .)
+    RESTA           reduce using rule 26 (expr -> expr DIVISION expr .)
+    MULTIPLICACION  reduce using rule 26 (expr -> expr DIVISION expr .)
+    DIVISION        reduce using rule 26 (expr -> expr DIVISION expr .)
+    COMA            reduce using rule 26 (expr -> expr DIVISION expr .)
+    PARENTESIS_DER  reduce using rule 26 (expr -> expr DIVISION expr .)
+    COMPARACION     reduce using rule 26 (expr -> expr DIVISION expr .)
+
+  ! SUMA            [ shift and go to state 40 ]
+  ! RESTA           [ shift and go to state 41 ]
+  ! MULTIPLICACION  [ shift and go to state 42 ]
+  ! DIVISION        [ shift and go to state 43 ]
+
+
+state 57
+
+    (27) expr -> PARENTESIS_IZQ expr PARENTESIS_DER .
+
+    PUNTOCOMA       reduce using rule 27 (expr -> PARENTESIS_IZQ expr PARENTESIS_DER .)
+    SUMA            reduce using rule 27 (expr -> PARENTESIS_IZQ expr PARENTESIS_DER .)
+    RESTA           reduce using rule 27 (expr -> PARENTESIS_IZQ expr PARENTESIS_DER .)
+    MULTIPLICACION  reduce using rule 27 (expr -> PARENTESIS_IZQ expr PARENTESIS_DER .)
+    DIVISION        reduce using rule 27 (expr -> PARENTESIS_IZQ expr PARENTESIS_DER .)
+    COMA            reduce using rule 27 (expr -> PARENTESIS_IZQ expr PARENTESIS_DER .)
+    PARENTESIS_DER  reduce using rule 27 (expr -> PARENTESIS_IZQ expr PARENTESIS_DER .)
+    COMPARACION     reduce using rule 27 (expr -> PARENTESIS_IZQ expr PARENTESIS_DER .)
+
+
+state 58
+
+    (9) stmt -> PRINT PARENTESIS_IZQ args_opt PARENTESIS_DER PUNTOCOMA .
+
+    ID              reduce using rule 9 (stmt -> PRINT PARENTESIS_IZQ args_opt PARENTESIS_DER PUNTOCOMA .)
+    PRINT           reduce using rule 9 (stmt -> PRINT PARENTESIS_IZQ args_opt PARENTESIS_DER PUNTOCOMA .)
+    IF              reduce using rule 9 (stmt -> PRINT PARENTESIS_IZQ args_opt PARENTESIS_DER PUNTOCOMA .)
+    WHILE           reduce using rule 9 (stmt -> PRINT PARENTESIS_IZQ args_opt PARENTESIS_DER PUNTOCOMA .)
+    FOR             reduce using rule 9 (stmt -> PRINT PARENTESIS_IZQ args_opt PARENTESIS_DER PUNTOCOMA .)
+    INT             reduce using rule 9 (stmt -> PRINT PARENTESIS_IZQ args_opt PARENTESIS_DER PUNTOCOMA .)
+    FLOAT           reduce using rule 9 (stmt -> PRINT PARENTESIS_IZQ args_opt PARENTESIS_DER PUNTOCOMA .)
+    CHAR            reduce using rule 9 (stmt -> PRINT PARENTESIS_IZQ args_opt PARENTESIS_DER PUNTOCOMA .)
+    $end            reduce using rule 9 (stmt -> PRINT PARENTESIS_IZQ args_opt PARENTESIS_DER PUNTOCOMA .)
+    PARENTESIS_DER  reduce using rule 9 (stmt -> PRINT PARENTESIS_IZQ args_opt PARENTESIS_DER PUNTOCOMA .)
+
+
+state 59
+
+    (13) args_list -> args_list COMA expr .
+    (23) expr -> expr . SUMA expr
+    (24) expr -> expr . RESTA expr
+    (25) expr -> expr . MULTIPLICACION expr
+    (26) expr -> expr . DIVISION expr
+
+    COMA            reduce using rule 13 (args_list -> args_list COMA expr .)
+    PARENTESIS_DER  reduce using rule 13 (args_list -> args_list COMA expr .)
+    SUMA            shift and go to state 40
+    RESTA           shift and go to state 41
+    MULTIPLICACION  shift and go to state 42
+    DIVISION        shift and go to state 43
+
+
+state 60
+
+    (21) block -> PARENTESIS_IZQ . stmts_opt PARENTESIS_DER
+    (2) stmts_opt -> . stmts
+    (3) stmts_opt -> . empty
+    (4) stmts -> . stmts stmt
+    (5) stmts -> . stmt
+    (37) empty -> .
+    (6) stmt -> . type ID PUNTOCOMA
+    (7) stmt -> . type ID ASIGNACION expr PUNTOCOMA
+    (8) stmt -> . ID ASIGNACION expr PUNTOCOMA
+    (9) stmt -> . PRINT PARENTESIS_IZQ args_opt PARENTESIS_DER PUNTOCOMA
+    (14) stmt -> . IF PARENTESIS_IZQ condition PARENTESIS_DER block
+    (15) stmt -> . IF PARENTESIS_IZQ condition PARENTESIS_DER block ELSE block
+    (16) stmt -> . WHILE PARENTESIS_IZQ condition PARENTESIS_DER block
+    (32) stmt -> . FOR PARENTESIS_IZQ for_init PUNTOCOMA condition PUNTOCOMA for_update PARENTESIS_DER block
+    (19) type -> . INT
+    (20) type -> . FLOAT
+    (33) type -> . CHAR
+
+    PARENTESIS_DER  reduce using rule 37 (empty -> .)
+    ID              shift and go to state 5
+    PRINT           shift and go to state 6
+    IF              shift and go to state 7
+    WHILE           shift and go to state 8
+    FOR             shift and go to state 9
+    INT             shift and go to state 10
+    FLOAT           shift and go to state 11
+    CHAR            shift and go to state 12
+
+    stmts_opt                      shift and go to state 66
+    stmts                          shift and go to state 67
+    empty                          shift and go to state 68
+    stmt                           shift and go to state 3
+    type                           shift and go to state 4
+
+state 61
+
+    (14) stmt -> IF PARENTESIS_IZQ condition PARENTESIS_DER block .
+    (15) stmt -> IF PARENTESIS_IZQ condition PARENTESIS_DER block . ELSE block
+
+    ID              reduce using rule 14 (stmt -> IF PARENTESIS_IZQ condition PARENTESIS_DER block .)
+    PRINT           reduce using rule 14 (stmt -> IF PARENTESIS_IZQ condition PARENTESIS_DER block .)
+    IF              reduce using rule 14 (stmt -> IF PARENTESIS_IZQ condition PARENTESIS_DER block .)
+    WHILE           reduce using rule 14 (stmt -> IF PARENTESIS_IZQ condition PARENTESIS_DER block .)
+    FOR             reduce using rule 14 (stmt -> IF PARENTESIS_IZQ condition PARENTESIS_DER block .)
+    INT             reduce using rule 14 (stmt -> IF PARENTESIS_IZQ condition PARENTESIS_DER block .)
+    FLOAT           reduce using rule 14 (stmt -> IF PARENTESIS_IZQ condition PARENTESIS_DER block .)
+    CHAR            reduce using rule 14 (stmt -> IF PARENTESIS_IZQ condition PARENTESIS_DER block .)
+    $end            reduce using rule 14 (stmt -> IF PARENTESIS_IZQ condition PARENTESIS_DER block .)
+    PARENTESIS_DER  reduce using rule 14 (stmt -> IF PARENTESIS_IZQ condition PARENTESIS_DER block .)
+    ELSE            shift and go to state 69
+
+
+state 62
+
+    (22) condition -> expr COMPARACION expr .
+    (23) expr -> expr . SUMA expr
+    (24) expr -> expr . RESTA expr
+    (25) expr -> expr . MULTIPLICACION expr
+    (26) expr -> expr . DIVISION expr
+
+    PARENTESIS_DER  reduce using rule 22 (condition -> expr COMPARACION expr .)
+    PUNTOCOMA       reduce using rule 22 (condition -> expr COMPARACION expr .)
+    SUMA            shift and go to state 40
+    RESTA           shift and go to state 41
+    MULTIPLICACION  shift and go to state 42
+    DIVISION        shift and go to state 43
+
+
+state 63
+
+    (16) stmt -> WHILE PARENTESIS_IZQ condition PARENTESIS_DER block .
+
+    ID              reduce using rule 16 (stmt -> WHILE PARENTESIS_IZQ condition PARENTESIS_DER block .)
+    PRINT           reduce using rule 16 (stmt -> WHILE PARENTESIS_IZQ condition PARENTESIS_DER block .)
+    IF              reduce using rule 16 (stmt -> WHILE PARENTESIS_IZQ condition PARENTESIS_DER block .)
+    WHILE           reduce using rule 16 (stmt -> WHILE PARENTESIS_IZQ condition PARENTESIS_DER block .)
+    FOR             reduce using rule 16 (stmt -> WHILE PARENTESIS_IZQ condition PARENTESIS_DER block .)
+    INT             reduce using rule 16 (stmt -> WHILE PARENTESIS_IZQ condition PARENTESIS_DER block .)
+    FLOAT           reduce using rule 16 (stmt -> WHILE PARENTESIS_IZQ condition PARENTESIS_DER block .)
+    CHAR            reduce using rule 16 (stmt -> WHILE PARENTESIS_IZQ condition PARENTESIS_DER block .)
+    $end            reduce using rule 16 (stmt -> WHILE PARENTESIS_IZQ condition PARENTESIS_DER block .)
+    PARENTESIS_DER  reduce using rule 16 (stmt -> WHILE PARENTESIS_IZQ condition PARENTESIS_DER block .)
+
+
+state 64
+
+    (32) stmt -> FOR PARENTESIS_IZQ for_init PUNTOCOMA condition . PUNTOCOMA for_update PARENTESIS_DER block
+
+    PUNTOCOMA       shift and go to state 70
+
+
+state 65
+
+    (31) assignment -> ID ASIGNACION expr .
+    (23) expr -> expr . SUMA expr
+    (24) expr -> expr . RESTA expr
+    (25) expr -> expr . MULTIPLICACION expr
+    (26) expr -> expr . DIVISION expr
+
+    PUNTOCOMA       reduce using rule 31 (assignment -> ID ASIGNACION expr .)
+    PARENTESIS_DER  reduce using rule 31 (assignment -> ID ASIGNACION expr .)
+    SUMA            shift and go to state 40
+    RESTA           shift and go to state 41
+    MULTIPLICACION  shift and go to state 42
+    DIVISION        shift and go to state 43
+
+
+state 66
+
+    (21) block -> PARENTESIS_IZQ stmts_opt . PARENTESIS_DER
+
+    PARENTESIS_DER  shift and go to state 71
+
+
+state 67
+
+    (2) stmts_opt -> stmts .
+    (4) stmts -> stmts . stmt
+    (6) stmt -> . type ID PUNTOCOMA
+    (7) stmt -> . type ID ASIGNACION expr PUNTOCOMA
+    (8) stmt -> . ID ASIGNACION expr PUNTOCOMA
+    (9) stmt -> . PRINT PARENTESIS_IZQ args_opt PARENTESIS_DER PUNTOCOMA
+    (14) stmt -> . IF PARENTESIS_IZQ condition PARENTESIS_DER block
+    (15) stmt -> . IF PARENTESIS_IZQ condition PARENTESIS_DER block ELSE block
+    (16) stmt -> . WHILE PARENTESIS_IZQ condition PARENTESIS_DER block
+    (32) stmt -> . FOR PARENTESIS_IZQ for_init PUNTOCOMA condition PUNTOCOMA for_update PARENTESIS_DER block
+    (19) type -> . INT
+    (20) type -> . FLOAT
+    (33) type -> . CHAR
+
+    PARENTESIS_DER  reduce using rule 2 (stmts_opt -> stmts .)
+    ID              shift and go to state 5
+    PRINT           shift and go to state 6
+    IF              shift and go to state 7
+    WHILE           shift and go to state 8
+    FOR             shift and go to state 9
+    INT             shift and go to state 10
+    FLOAT           shift and go to state 11
+    CHAR            shift and go to state 12
+
+    stmt                           shift and go to state 13
+    type                           shift and go to state 4
+
+state 68
+
+    (3) stmts_opt -> empty .
+
+    PARENTESIS_DER  reduce using rule 3 (stmts_opt -> empty .)
+
+
+state 69
+
+    (15) stmt -> IF PARENTESIS_IZQ condition PARENTESIS_DER block ELSE . block
+    (21) block -> . PARENTESIS_IZQ stmts_opt PARENTESIS_DER
+
+    PARENTESIS_IZQ  shift and go to state 60
+
+    block                          shift and go to state 72
+
+state 70
+
+    (32) stmt -> FOR PARENTESIS_IZQ for_init PUNTOCOMA condition PUNTOCOMA . for_update PARENTESIS_DER block
+    (17) for_update -> . ID INCREMENTO
+    (18) for_update -> . ID DECREMENTO
+    (36) for_update -> . assignment
+    (31) assignment -> . ID ASIGNACION expr
+
+    ID              shift and go to state 74
+
+    for_update                     shift and go to state 73
+    assignment                     shift and go to state 75
+
+state 71
+
+    (21) block -> PARENTESIS_IZQ stmts_opt PARENTESIS_DER .
+
+    ELSE            reduce using rule 21 (block -> PARENTESIS_IZQ stmts_opt PARENTESIS_DER .)
+    ID              reduce using rule 21 (block -> PARENTESIS_IZQ stmts_opt PARENTESIS_DER .)
+    PRINT           reduce using rule 21 (block -> PARENTESIS_IZQ stmts_opt PARENTESIS_DER .)
+    IF              reduce using rule 21 (block -> PARENTESIS_IZQ stmts_opt PARENTESIS_DER .)
+    WHILE           reduce using rule 21 (block -> PARENTESIS_IZQ stmts_opt PARENTESIS_DER .)
+    FOR             reduce using rule 21 (block -> PARENTESIS_IZQ stmts_opt PARENTESIS_DER .)
+    INT             reduce using rule 21 (block -> PARENTESIS_IZQ stmts_opt PARENTESIS_DER .)
+    FLOAT           reduce using rule 21 (block -> PARENTESIS_IZQ stmts_opt PARENTESIS_DER .)
+    CHAR            reduce using rule 21 (block -> PARENTESIS_IZQ stmts_opt PARENTESIS_DER .)
+    $end            reduce using rule 21 (block -> PARENTESIS_IZQ stmts_opt PARENTESIS_DER .)
+    PARENTESIS_DER  reduce using rule 21 (block -> PARENTESIS_IZQ stmts_opt PARENTESIS_DER .)
+
+
+state 72
+
+    (15) stmt -> IF PARENTESIS_IZQ condition PARENTESIS_DER block ELSE block .
+
+    ID              reduce using rule 15 (stmt -> IF PARENTESIS_IZQ condition PARENTESIS_DER block ELSE block .)
+    PRINT           reduce using rule 15 (stmt -> IF PARENTESIS_IZQ condition PARENTESIS_DER block ELSE block .)
+    IF              reduce using rule 15 (stmt -> IF PARENTESIS_IZQ condition PARENTESIS_DER block ELSE block .)
+    WHILE           reduce using rule 15 (stmt -> IF PARENTESIS_IZQ condition PARENTESIS_DER block ELSE block .)
+    FOR             reduce using rule 15 (stmt -> IF PARENTESIS_IZQ condition PARENTESIS_DER block ELSE block .)
+    INT             reduce using rule 15 (stmt -> IF PARENTESIS_IZQ condition PARENTESIS_DER block ELSE block .)
+    FLOAT           reduce using rule 15 (stmt -> IF PARENTESIS_IZQ condition PARENTESIS_DER block ELSE block .)
+    CHAR            reduce using rule 15 (stmt -> IF PARENTESIS_IZQ condition PARENTESIS_DER block ELSE block .)
+    $end            reduce using rule 15 (stmt -> IF PARENTESIS_IZQ condition PARENTESIS_DER block ELSE block .)
+    PARENTESIS_DER  reduce using rule 15 (stmt -> IF PARENTESIS_IZQ condition PARENTESIS_DER block ELSE block .)
+
+
+state 73
+
+    (32) stmt -> FOR PARENTESIS_IZQ for_init PUNTOCOMA condition PUNTOCOMA for_update . PARENTESIS_DER block
+
+    PARENTESIS_DER  shift and go to state 76
+
+
+state 74
+
+    (17) for_update -> ID . INCREMENTO
+    (18) for_update -> ID . DECREMENTO
+    (31) assignment -> ID . ASIGNACION expr
+
+    INCREMENTO      shift and go to state 77
+    DECREMENTO      shift and go to state 78
+    ASIGNACION      shift and go to state 51
+
+
+state 75
+
+    (36) for_update -> assignment .
+
+    PARENTESIS_DER  reduce using rule 36 (for_update -> assignment .)
+
+
+state 76
+
+    (32) stmt -> FOR PARENTESIS_IZQ for_init PUNTOCOMA condition PUNTOCOMA for_update PARENTESIS_DER . block
+    (21) block -> . PARENTESIS_IZQ stmts_opt PARENTESIS_DER
+
+    PARENTESIS_IZQ  shift and go to state 60
+
+    block                          shift and go to state 79
+
+state 77
+
+    (17) for_update -> ID INCREMENTO .
+
+    PARENTESIS_DER  reduce using rule 17 (for_update -> ID INCREMENTO .)
+
+
+state 78
+
+    (18) for_update -> ID DECREMENTO .
+
+    PARENTESIS_DER  reduce using rule 18 (for_update -> ID DECREMENTO .)
+
+
+state 79
+
+    (32) stmt -> FOR PARENTESIS_IZQ for_init PUNTOCOMA condition PUNTOCOMA for_update PARENTESIS_DER block .
+
+    ID              reduce using rule 32 (stmt -> FOR PARENTESIS_IZQ for_init PUNTOCOMA condition PUNTOCOMA for_update PARENTESIS_DER block .)
+    PRINT           reduce using rule 32 (stmt -> FOR PARENTESIS_IZQ for_init PUNTOCOMA condition PUNTOCOMA for_update PARENTESIS_DER block .)
+    IF              reduce using rule 32 (stmt -> FOR PARENTESIS_IZQ for_init PUNTOCOMA condition PUNTOCOMA for_update PARENTESIS_DER block .)
+    WHILE           reduce using rule 32 (stmt -> FOR PARENTESIS_IZQ for_init PUNTOCOMA condition PUNTOCOMA for_update PARENTESIS_DER block .)
+    FOR             reduce using rule 32 (stmt -> FOR PARENTESIS_IZQ for_init PUNTOCOMA condition PUNTOCOMA for_update PARENTESIS_DER block .)
+    INT             reduce using rule 32 (stmt -> FOR PARENTESIS_IZQ for_init PUNTOCOMA condition PUNTOCOMA for_update PARENTESIS_DER block .)
+    FLOAT           reduce using rule 32 (stmt -> FOR PARENTESIS_IZQ for_init PUNTOCOMA condition PUNTOCOMA for_update PARENTESIS_DER block .)
+    CHAR            reduce using rule 32 (stmt -> FOR PARENTESIS_IZQ for_init PUNTOCOMA condition PUNTOCOMA for_update PARENTESIS_DER block .)
+    $end            reduce using rule 32 (stmt -> FOR PARENTESIS_IZQ for_init PUNTOCOMA condition PUNTOCOMA for_update PARENTESIS_DER block .)
+    PARENTESIS_DER  reduce using rule 32 (stmt -> FOR PARENTESIS_IZQ for_init PUNTOCOMA condition PUNTOCOMA for_update PARENTESIS_DER block .)
+

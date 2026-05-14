@@ -1,0 +1,7 @@
+pip install pyinstaller
+
+cd + ubicación
+
+pyinstaller --onefile --windowed --clean --hidden-import=ply main.py
+
+.spec, dist y build son generados en el proceso

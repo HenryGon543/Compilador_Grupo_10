@@ -1,0 +1,30 @@
+float a = 5.44;
+int b = 10;
+int c;
+int contador = 0;
+c = 8 * 8 * 2;
+
+print("hola");
+print("float");
+print(a);
+
+if(a < 5) (
+  print("verdadero");
+) else (
+  print("falso");
+)
+
+while(contador < 4) (
+  print("se debe repetir 4 veces");
+  contador = contador + 1;
+)
+
+char letra = 'B';
+
+print(letra);
+
+int i;
+
+for(i = 0; i < 5; i++) (
+    print("Hola 5 veces");
+)

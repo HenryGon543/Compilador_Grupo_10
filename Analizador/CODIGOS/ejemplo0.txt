@@ -1,0 +1,6 @@
+print("Hello, World!\n");
+print("hola");
+float decimal = 3.22;
+print(decimal);
+
+
