@@ -1,7 +1,7 @@
 int a = 5;
 int b = 10;
 int c;
-
+int contador = 0;
 c = (a + 0) * 1 + (2 * 3);
 
 print("hola");

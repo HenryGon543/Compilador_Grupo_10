@@ -265,67 +265,156 @@ def cargar_archivo():
 
 
 
-#------------------------------------------------------REGLAS LEXICAS-------------------------------------------------
+#------------------------------------------------------REGLAS LEXICAS (LEXER)-------------------------------------------------
 
-#Palabras reservadas
-reserved = {
+# =====================================================
+# PALABRAS RESERVADAS
+# =====================================================
+
+reservadas = {
+
     'int': 'INT',
     'float': 'FLOAT',
+
     'if': 'IF',
     'else': 'ELSE',
     'while': 'WHILE',
+
     'print': 'PRINT',
     'printf': 'PRINTF',
+
     'return': 'RETURN'
 }
 
-#Lista de tokens
+# =====================================================
+# TOKENS
+# =====================================================
+
 tokens = [
+
+    # Identificadores y literales
     'ID',
     'NUMERO',
-    'OPERACION',
-    'ASIGNACION',
-    'PUNTOCOMA',
-    'PARENTESIS',
-    'LLAVES',
-    'COMA',
-    'COMPARACION',
-    'DESC'
-] + list(reserved.values())
+    'CADENA',
 
-#Definir reglas
-#se debe usar regex para registrar simbolos como el + o * porque phyton los usa como palabras reservadas
-t_OPERACION = r'\+ | - | \* | /'
-t_ASIGNACION = r'='
+    # Operadores aritméticos
+    'SUMA',
+    'RESTA',
+    'MULTIPLICACION',
+    'DIVISION',
+
+    # Asignación
+    'ASIGNACION',
+
+    # Comparaciones
+    'COMPARACION',
+
+    # Símbolos
+    'PUNTOCOMA',
+    'COMA',
+
+    # Paréntesis
+    'PARENTESIS_IZQ',
+    'PARENTESIS_DER',
+
+    # Llaves
+    'LLAVE_IZQ',
+    'LLAVE_DER'
+
+] + list(reservadas.values())
+
+# =====================================================
+# TOKENS SIMPLES
+# =====================================================
+
+t_SUMA = r'\+'
+t_RESTA = r'-'
+t_MULTIPLICACION = r'\*'
+t_DIVISION = r'/'
+
+# IMPORTANTE:
+# COMPARACION debe ir antes que ASIGNACION
+# para que == no se rompa en = =
+def t_COMPARACION(t):
+    r'<=|>=|==|!=|<|>'
+    return t
+
+def t_ASIGNACION(t):
+    r'='
+    return t
+
 t_PUNTOCOMA = r';'
-t_PARENTESIS = r'\( | \)'
-t_LLAVES = r'\{ | \}'
 t_COMA = r','
-t_COMPARACION = r'< | > | =='
-t_ignore = ' \t' #saltos de linea
+
+t_PARENTESIS_IZQ = r'\('
+t_PARENTESIS_DER = r'\)'
+
+t_LLAVE_IZQ = r'\{'
+t_LLAVE_DER = r'\}'
+
+# Ignorar espacios y tabs
+t_ignore = ' \t'
+
+# =====================================================
+# IDENTIFICADORES
+# =====================================================
 
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z_0-9]*'
-    t.type = reserved.get(t.value, 'ID')
+
+    t.type = reservadas.get(t.value, 'ID')
+
     return t
+
+# =====================================================
+# NÚMEROS
+# =====================================================
 
 def t_NUMERO(t):
     r'\d+(\.\d+)?'
-    t.value = float(t.value) if '.' in t.value else int(t.value)
+
+    if '.' in t.value:
+        t.value = float(t.value)
+    else:
+        t.value = int(t.value)
+
     return t
-#Las palabras entre comillas "" son del tipo de token DESC
-def t_DESC(t):
+
+# =====================================================
+# CADENAS
+# =====================================================
+
+def t_CADENA(t):
     r'\"([^\\\n]|(\\.))*?\"'
+
     return t
+
+# =====================================================
+# NUEVAS LÍNEAS
+# =====================================================
 
 def t_newline(t):
     r'\n+'
+
     t.lexer.lineno += len(t.value)
 
+# =====================================================
+# ERRORES
+# =====================================================
+
 def t_error(t):
+
+    print(
+        f"Carácter ilegal '{t.value[0]}' "
+        f"en línea {t.lineno}"
+    )
+
     t.lexer.skip(1)
 
-#Construir el lexer que será pasado para mostrar el codigo
+# =====================================================
+# CONSTRUIR LEXER
+# =====================================================
+
 lexer = lex.lex()
 #------------------------------------------------------ANALIZADOR LEXICO-------------------------------------------------
 
@@ -385,51 +474,74 @@ def mostrar_lexico():
     total_reservadas = 0
     
     
-    tokens_text.tag_configure("reservadas", foreground="#cf4bff")  # naranja
+    # Colores
+    tokens_text.tag_configure("reservadas", foreground="#cf4bff")
     tokens_text.tag_configure("operacion", foreground="#ff2c2c")
     tokens_text.tag_configure("parentesis", foreground="#2cb2ff")
-    
+
     # Generar tokens
     for tok in lexer:
-        #Contador de tokens, palabras reservadas y variables
+
         total_tokens += 1
-            
+
         if tok.type == "ID":
             total_id += 1
 
-        if tok.type in ("INT", "FLOAT", "IF", "ELSE", "WHILE", "PRINT"):
+        if tok.type in (
+            "INT",
+            "FLOAT",
+            "IF",
+            "ELSE",
+            "WHILE",
+            "PRINT"
+        ):
             total_reservadas += 1
-       
-        #Se define el valor de mi_tag que hace referencia al color de las palabras reservadas,
-        #operaciones y parentesis, e indica que color va según su tipo
-        if tok.type in reserved.values():
+
+        # Selección de color
+        if tok.type in reservadas.values():
+
             mi_tag = "reservadas"
-        elif tok.type == 'OPERACION':
+
+        elif tok.type in (
+            'SUMA',
+            'RESTA',
+            'MULTIPLICACION',
+            'DIVISION'
+        ):
+
             mi_tag = "operacion"
-        elif tok.type == 'PARENTESIS':
+
+        elif tok.type in (
+            'PARENTESIS_IZQ',
+            'PARENTESIS_DER'
+        ):
+
             mi_tag = "parentesis"
+
         else:
+
             mi_tag = "normal"
 
-        #Se inserta el tipo
-        tokens_text.insert("end", f"{tok.type:<19}")
-            
-        #Se inserta el lexema y se aplica el tag definido anteriormente
-        tokens_text.insert("end", f"{str(tok.value):<19}", mi_tag)
-            
-        #Se inserta el número de línea y se realiza un salto de línea
-        tokens_text.insert("end", f"{tok.lineno}\n")
+        # Tipo
+        tokens_text.insert(
+            "end",
+            f"{tok.type:<19}"
+        )
 
-        
-    tokens_text.insert("end", "\n")
-    tokens_text.insert("end", "----------------------------------------\n")
-    tokens_text.insert("end", f"Total de tokens: {total_tokens}\n")
-    tokens_text.insert("end", f"Total de variables: {total_id}\n")
-    tokens_text.insert("end", f"Total de palabras reservadas: {total_reservadas}\n")
+        # Lexema
+        tokens_text.insert(
+            "end",
+            f"{str(tok.value):<19}",
+            mi_tag
+        )
 
-    tokens_text.config(state="disabled")
+        # Línea
+        tokens_text.insert(
+            "end",
+            f"{tok.lineno}\n"
+        )
 
-#------------------------------------------------------ARBOL SINTACTICO--------------------------------------------------
+#------------------------------------------------------ARBOL SINTACTICO (PARSER)--------------------------------------------------
 
 # Nodo AST
 class Node:
@@ -442,9 +554,11 @@ def make_leaf(label):
 
 # Precedencia de expresiones
 precedence = (
-    ('nonassoc', 'IFX'),   # precedencia ficticia para IF sin ELSE
-    ('nonassoc', 'ELSE'),  # ELSE tiene mayor prioridad que IFX
-    ("left", "OPERACION"), # precedencia aritmetica
+    ('nonassoc', 'IFX'),
+    ('nonassoc', 'ELSE'),
+
+    ('left', 'SUMA', 'RESTA'),
+    ('left', 'MULTIPLICACION', 'DIVISION'),
 )
 
 # Programa: lista de sentencias
@@ -467,22 +581,33 @@ def p_stmts_one(p):
 
 def p_stmt_decl(p):
     "stmt : type ID PUNTOCOMA"
-    # int y;
-    p[0] = Node("DECL", [p[1], make_leaf(f"ID:{p[2]}")])
+
+    p[0] = Node(
+        "DECL",
+        [p[1], make_leaf(f"ID:{p[2]}")]
+    )
 
 def p_stmt_decl_assign(p):
     "stmt : type ID ASIGNACION expr PUNTOCOMA"
-    # int x = 10;
-    p[0] = Node("DECL_ASIGN", [p[1], make_leaf(f"ID:{p[2]}"), p[4]])
+
+    p[0] = Node(
+        "DECL_ASIGN",
+        [p[1], make_leaf(f"ID:{p[2]}"), p[4]]
+    )
 
 def p_stmt_assign(p):
     "stmt : ID ASIGNACION expr PUNTOCOMA"
-    # x = x - 1;
-    p[0] = Node("ASIGN", [make_leaf(f"ID:{p[1]}"), p[3]])
+
+    p[0] = Node(
+        "ASIGN",
+        [make_leaf(f"ID:{p[1]}"), p[3]]
+    )
 
 def p_stmt_print_multi(p):
-    "stmt : PRINT PARENTESIS args_opt PARENTESIS PUNTOCOMA"
-    # p[3] será una lista de nodos (args)
+    '''
+    stmt : PRINT PARENTESIS_IZQ args_opt PARENTESIS_DER PUNTOCOMA
+    '''
+
     p[0] = Node("PRINT", p[3])
 
 def p_args_opt(p):
@@ -501,18 +626,31 @@ def p_args_list_many(p):
     p[0] = p[1] + [p[3]]
 
 def p_stmt_if_no_else(p):
-    "stmt : IF PARENTESIS condition PARENTESIS block %prec IFX"
-    # IF con 2 hijos: condición y bloque THEN
+    '''
+    stmt : IF PARENTESIS_IZQ condition PARENTESIS_DER block %prec IFX
+    '''
+
     p[0] = Node("IF", [p[3], p[5]])
 
 def p_stmt_if_with_else(p):
-    "stmt : IF PARENTESIS condition PARENTESIS block ELSE block"
-    # IF con 3 hijos: condición, bloque THEN, y un nodo ELSE que contiene su bloque
-    p[0] = Node("IF", [p[3], p[5], Node("ELSE", [p[7]])])
+    '''
+    stmt : IF PARENTESIS_IZQ condition PARENTESIS_DER block ELSE block
+    '''
+
+    p[0] = Node(
+        "IF",
+        [p[3], p[5], Node("ELSE", [p[7]])]
+    )
 
 def p_stmt_while(p):
-    "stmt : WHILE PARENTESIS condition PARENTESIS block"
-    p[0] = Node("WHILE", [p[3], p[5]])
+    '''
+    stmt : WHILE PARENTESIS_IZQ condition PARENTESIS_DER block
+    '''
+
+    p[0] = Node(
+        "WHILE",
+        [p[3], p[5]]
+    )
 
 # Tipos
 def p_type_int(p):
@@ -525,22 +663,41 @@ def p_type_float(p):
 
 # Se usa parentesis como bloque para agrupar ( ... )
 def p_block(p):
-    "block : PARENTESIS stmts_opt PARENTESIS"
+    '''
+    block : PARENTESIS_IZQ stmts_opt PARENTESIS_DER
+    '''
+
     p[0] = Node("BLOQUE", p[2])
 
 # Condiciones
-def p_condition_gt(p):
+def p_condition(p):
     "condition : expr COMPARACION expr"
-    p[0] = Node("CONDICION", [p[1], p[3]])
+
+    nodo = Node("CONDICION", [p[1], p[3]])
+
+    nodo.op_relacional = p[2]
+
+    p[0] = nodo
 
 # Expresiones con operadores
 def p_expr_binop(p):
-    "expr : expr OPERACION expr"
-    op = p[2].strip()
-    p[0] = Node(op, [p[1], p[3]])
+    '''
+    expr : expr SUMA expr
+         | expr RESTA expr
+         | expr MULTIPLICACION expr
+         | expr DIVISION expr
+    '''
+
+    p[0] = Node(
+        p[2],
+        [p[1], p[3]]
+    )
 
 def p_expr_group(p):
-    "expr : PARENTESIS expr PARENTESIS"
+    '''
+    expr : PARENTESIS_IZQ expr PARENTESIS_DER
+    '''
+
     p[0] = p[2]
 
 def p_expr_id(p):
@@ -552,7 +709,10 @@ def p_expr_num(p):
     p[0] = Node(f"NUM:{p[1]}")
 
 def p_expr_desc(p):
-    "expr : DESC"
+    '''
+    expr : CADENA
+    '''
+
     p[0] = Node(f"DESC:{p[1]}")
 
 def p_empty(p):
@@ -566,9 +726,11 @@ def p_error(p):
     messagebox.showinfo("Error", "Error de sintaxis al final del archivo")
     raise SyntaxError("Error de sintaxis al final del archivo")
 
-parser = yacc.yacc(start="program", debug=False, #le agregue los 3 atributos para generar el exe
-    write_tables=False,
-    errorlog=yacc.NullLogger())
+parser = yacc.yacc(
+    start="program",
+    debug=True,
+    write_tables=False
+)
 
 def node_to_dict(n):
     return {
@@ -1143,41 +1305,40 @@ class TACGenerator:
         # WHILE
         # ----------------------
         elif node.label == "WHILE":
+            start_label = self.new_label() # L1
+            end_label = f"END_{start_label}" # END_L1
 
-            start = self.new_label()
-            cond_label = self.new_label()
+            self.code.append(f"{start_label}:")
 
-            self.code.append(f"{start}:")
-
+            # Generamos la condición (ej: t6 = contador < 5)
             cond = self.generate(node.children[0])
 
-            self.code.append(f"if {cond} goto {cond_label}")
+            # Si la condición es FALSA (0), saltamos al final
+            # (En TAC avanzado se suele usar 'ifFalse', pero con 'if' basta)
+            self.code.append(f"if {cond} == 0 goto {end_label}")
 
-            self.code.append(f"goto END_{start}")
-
-            self.code.append(f"{cond_label}:")
-
+            # Cuerpo del bucle
             self.generate(node.children[1])
 
-            self.code.append(f"goto {start}")
-
-            self.code.append(f"END_{start}:")
+            # Volver al inicio para re-evaluar
+            self.code.append(f"goto {start_label}")
+            self.code.append(f"{end_label}:")
 
         # ----------------------
         # CONDICIÓN
         # ----------------------
         elif node.label == "CONDICION":
+
             left = self.generate(node.children[0])
             right = self.generate(node.children[1])
-            
-            # Supongamos que el operador vive en node.operator o en otro hijo
-            # Si no lo tienes, asegúrate de que el Parser lo pase al nodo.
-            op = node.op_relacional if hasattr(node, 'op_relacional') else "==" 
+
+            op = node.op_relacional
 
             temp = self.new_temp()
-            self.code.append(f"{temp} = {left} {op} {right}")
-            return temp
 
+            self.code.append(f"{temp} = {left} {op} {right}")
+
+            return temp
         # ----------------------
         # OPERACIONES
         # ----------------------
@@ -1371,7 +1532,7 @@ class TACOptimizer:
 
         for line in self.code:
 
-            if "=" not in line:
+            if "=" not in line or line.startswith("if"):
                 optimized.append(line)
                 continue
 
@@ -1429,7 +1590,7 @@ class TACOptimizer:
     # t1 = a + 2
     # -> t1 = 5 + 2
     # ============================================
-
+    """
     def constant_propagation(self):
 
         constants = {}
@@ -1437,7 +1598,7 @@ class TACOptimizer:
 
         for line in self.code:
 
-            if "=" not in line:
+            if "=" not in line or line.startswith("if"):
                 optimized.append(line)
                 continue
 
@@ -1471,7 +1632,7 @@ class TACOptimizer:
             optimized.append(f"{left} = {right}")
 
         self.code = optimized
-
+    """
     # ============================================
     # ALGEBRAIC SIMPLIFICATION
     # x = a + 0 -> x = a
@@ -1482,8 +1643,17 @@ class TACOptimizer:
         optimized = []
 
         for line in self.code:
+            
+            
+            if (
+                line.endswith(":")
+                or line.startswith("goto")
+                or line.startswith("if")
+            ):
+                optimized.append(line)
+                continue
 
-            if "=" not in line:
+            if "=" not in line or line.startswith("if"):
                 optimized.append(line)
                 continue
 
@@ -1549,14 +1719,46 @@ class TACOptimizer:
 
         for line in self.code:
 
-            if "=" not in line:
+            line = line.strip()
+
+            # ====================================
+            # RESET EN FLUJO DE CONTROL
+            # ====================================
+
+            if (
+                line.endswith(":")
+                or line.startswith("goto")
+                or line.startswith("if")
+            ):
+
+                copies.clear()
+
                 optimized.append(line)
+
                 continue
+
+            # ====================================
+            # LÍNEAS SIN ASIGNACIÓN
+            # ====================================
+
+            if "=" not in line:
+
+                optimized.append(line)
+
+                continue
+
+            # ====================================
+            # ASIGNACIÓN
+            # ====================================
 
             left, right = line.split("=", 1)
 
             left = left.strip()
             right = right.strip()
+
+            # ====================================
+            # REEMPLAZAR COPIAS DIRECTAS
+            # ====================================
 
             if right in copies:
                 right = copies[right]
@@ -1574,9 +1776,25 @@ class TACOptimizer:
 
             right = " ".join(new_parts)
 
-            # copia simple
-            if len(parts) == 1:
+            # ====================================
+            # GUARDAR COPIA SIMPLE
+            # x = y
+            # ====================================
+
+            if (
+                len(parts) == 1
+                and not self.is_number(right)
+            ):
                 copies[left] = right
+
+            # ====================================
+            # SI SE REDEFINE VARIABLE
+            # INVALIDAR COPIA
+            # ====================================
+
+            elif left in copies:
+
+                del copies[left]
 
             optimized.append(f"{left} = {right}")
 
@@ -1591,31 +1809,46 @@ class TACOptimizer:
 
         used = set()
 
-        # buscar variables usadas
+        # ====================================
+        # BUSCAR TEMPORALES USADOS
+        # ====================================
+
         for line in self.code:
 
-            if "=" in line:
+            if "=" in line and not line.startswith("if"):
 
                 left, right = line.split("=", 1)
 
                 parts = right.split()
 
                 for p in parts:
+
                     if p.startswith("t"):
                         used.add(p)
 
             else:
-                parts = line.split()
+
+                parts = (
+                    line
+                    .replace("==", " == ")
+                    .replace("!=", " != ")
+                    .split()
+                )
 
                 for p in parts:
+
                     if p.startswith("t"):
                         used.add(p)
+
+        # ====================================
+        # ELIMINAR TEMPORALES NO USADOS
+        # ====================================
 
         optimized = []
 
         for line in self.code:
 
-            if "=" in line:
+            if "=" in line and not line.startswith("if"):
 
                 left = line.split("=")[0].strip()
 
@@ -1626,7 +1859,6 @@ class TACOptimizer:
             optimized.append(line)
 
         self.code = optimized
-
     # ============================================
     # REMOVE REDUNDANT GOTOS
     # goto L1
@@ -1692,7 +1924,7 @@ class TACOptimizer:
 
             old_code = self.code.copy()
 
-            self.constant_propagation()
+            #self.constant_propagation()
 
             self.constant_folding()
 
@@ -1895,29 +2127,23 @@ class NASMGenerator:
     # ============================================
 
     def collect_variables(self):
-
         for line in self.tac:
-
             parts = line.replace(",", " ").split()
-
             for p in parts:
-
-                # IGNORAR STRINGS
                 if p.startswith('"') and p.endswith('"'):
                     continue
 
                 if (
                     p.isidentifier()
-                    and not p.startswith("L")
-                    and p not in [
-                        "if",
-                        "goto",
-                        "print",
-                        "None"
-                    ]
+                    # Ignoramos etiquetas estándar (L1, L2...) 
+                    and not p.startswith("L") 
+                    # Ignoramos etiquetas de cierre de bucles (END_L1...)
+                    and not p.startswith("END_")
+                    # Ignoramos etiquetas de comparación (TRUE_t1, END_t1...)
+                    and not p.startswith("TRUE_")
+                    and p not in ["if", "goto", "print", "None"]
                 ):
                     self.variables.add(p)
-
     # ============================================
     # VERIFICAR ENTERO
     # ============================================
@@ -2093,18 +2319,40 @@ class NASMGenerator:
         # ====================================
         if line.startswith("if"):
             parts = line.split()
-            # Espera un formato: if condicion goto etiqueta
-            condition = parts[1]
-            label = parts[3]
 
-            # Cargamos el resultado de la condición (t5) a un registro
-            self.asm.append(f"mov eax, [{condition}]")
-            # Comparamos contra 1 (Verdadero)
-            self.asm.append("cmp eax, 1")
-            # Si es igual a 1, saltamos a la etiqueta del bloque IF
-            self.asm.append(f"je {label}") 
+            # if t1 goto L1
+            if len(parts) == 4:
 
-            return
+                condition = parts[1]
+                label = parts[3]
+
+                self.asm.append(f"mov eax, [{condition}]")
+                self.asm.append("cmp eax, 1")
+                self.asm.append(f"je {label}")
+
+                return
+
+            # if t1 == 0 goto L1
+            elif len(parts) == 6:
+
+                condition = parts[1]
+                op = parts[2]
+                value = parts[3]
+                label = parts[5]
+
+                self.asm.append(f"mov eax, [{condition}]")
+                self.asm.append(f"cmp eax, {value}")
+
+                if op == "==":
+                    self.asm.append(f"je {label}")
+
+                elif op == "!=":
+                    self.asm.append(f"jne {label}")
+
+                return
+
+            else:
+                raise Exception(f"IF TAC inválido: {line}")
 
         # ====================================
         # PRINT
@@ -2156,12 +2404,14 @@ class NASMGenerator:
             self.asm.append("add esp, 8")
 
             return
+        
+        
 
         # ====================================
         # ASIGNACIONES
         # ====================================
 
-        if "=" in line:
+        if "=" in line and not line.startswith("if"):
 
             left, right = line.split("=", 1)
 
